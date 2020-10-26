@@ -15,17 +15,27 @@ public class ShoppingListServlet extends HttpServlet {
             throws ServletException, IOException {
         HttpSession session = request.getSession();
         String username = (String) session.getAttribute("username");
+        String action = request.getParameter("action");
         
         if (username == null || username == "")
         {
             getServletContext().getRequestDispatcher("/WEB-INF/register.jsp")
-                .forward(request, response); 
-        } else 
+                .forward(request, response);
+            return;
+        }
+        
+        if (action != null && action.equalsIgnoreCase("logout"))
         {
+            session.invalidate();
+            getServletContext().getRequestDispatcher("/WEB-INF/register.jsp")
+                .forward(request, response);
+            return;
+        }
+        
             request.setAttribute("username", username);
             getServletContext().getRequestDispatcher("/WEB-INF/shoppingList.jsp")
                 .forward(request, response); 
-        }
+        
     }
 
     @Override
@@ -47,10 +57,14 @@ public class ShoppingListServlet extends HttpServlet {
         } else if (action.equalsIgnoreCase("delete"))
         {
             
-        } else if (action.equalsIgnoreCase("logout"))
-        {
-            session.setAttribute("action", "logout");
-        }
+        } 
+        
+//        else if (action.equalsIgnoreCase("logout"))
+//        {
+//            session.setAttribute("action", "logout");
+//            getServletContext().getRequestDispatcher("/WEB-INF/register.jsp")
+//                .forward(request, response);
+//        }
     }
 
 }
