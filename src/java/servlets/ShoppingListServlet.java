@@ -28,8 +28,7 @@ public class ShoppingListServlet extends HttpServlet {
         if (action != null && action.equalsIgnoreCase("logout"))
         {
             session.invalidate();
-            getServletContext().getRequestDispatcher("/WEB-INF/register.jsp")
-                .forward(request, response);
+            response.sendRedirect("ShoppingList");
             return;
         }
         
@@ -43,11 +42,11 @@ public class ShoppingListServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         HttpSession session = request.getSession();
-        
         String username = request.getParameter("username");
         String action = request.getParameter("action");
-        
+        String item;
         ArrayList itemLists;
+        
         if (session.getAttribute("itemLists") == null)
         {
             itemLists = new ArrayList();
@@ -58,18 +57,19 @@ public class ShoppingListServlet extends HttpServlet {
         if (action.equalsIgnoreCase("register"))
         {
             session.setAttribute("username", username);
-            getServletContext().getRequestDispatcher("/WEB-INF/shoppingList.jsp")
-                .forward(request, response); 
+            response.sendRedirect("ShoppingList");
         } else if (action.equalsIgnoreCase("add"))
         {
-            String item = request.getParameter("item");
+            item = request.getParameter("item");
             itemLists.add(item);
             session.setAttribute("itemLists", itemLists);
-            getServletContext().getRequestDispatcher("/WEB-INF/shoppingList.jsp")
-                .forward(request, response); 
+            response.sendRedirect("ShoppingList");
         } else if (action.equalsIgnoreCase("delete"))
         {
-            
+            item = request.getParameter("item");
+            itemLists.remove(item);
+            session.setAttribute("itemLists", itemLists);
+            response.sendRedirect("ShoppingList");
         } 
     }
 
