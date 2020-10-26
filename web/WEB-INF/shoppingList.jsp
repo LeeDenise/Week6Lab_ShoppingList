@@ -23,7 +23,13 @@
         </form>
         
         <form action="" method="post">
-            
+            <c:if test="${itemLists.size() != 0}">
+                <ul>
+                <c:forEach var="item" items="${itemLists}">
+                    <li><input type="radio" name="item" value="${item}">${item}</li>
+                </c:forEach>
+                </ul>
+            </c:if>
             <input type="submit" value="Delete">
             <input type="hidden" name="action" value="delete">
         </form>
